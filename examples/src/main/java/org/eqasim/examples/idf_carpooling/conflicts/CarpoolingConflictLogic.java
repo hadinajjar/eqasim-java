@@ -31,7 +31,7 @@ public class CarpoolingConflictLogic implements ConflictLogic {
                 }
             }
         }
-		
+
 
 
         for (Person person : population.getPersons().values()) {
@@ -120,7 +120,7 @@ public class CarpoolingConflictLogic implements ConflictLogic {
 
         final private double departureTime;
 
-        public TripInfo(Trip t) {
+        static public TripInfo(Trip t) {
             this.routingMode = TripStructureUtils.getRoutingMode(t.getLegsOnly().get(0));
             this.originActivityCoord = t.getOriginActivity().getCoord();
             this.destinationActivityCoord = t.getDestinationActivity().getCoord();

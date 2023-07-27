@@ -31,11 +31,7 @@ public class CarpoolingConflictLogic implements ConflictLogic {
                 }
             }
         }
-		/*Printing the HashMap
-		System.out.println("========================================================================");
-		System.out.println("===========         PRINTING HASHMAP PROMPT           ==================");
-		System.out.println("========================================================================");
-		driverAgents.forEach((key, value) -> System.out.println("Driver Id " + key + " with info  " + value.toString()));*/
+		
 
 
         for (Person person : population.getPersons().values()) {
@@ -111,25 +107,6 @@ public class CarpoolingConflictLogic implements ConflictLogic {
                     }
 
 
-
-
-
-					/*var minDistance = distancesList.stream()
-							.mapToDouble(v -> v)
-							.min().orElseThrow(NoSuchElementException::new);
-
-					double minTime = timesList.stream()
-							.mapToDouble(v -> v)
-							.min().orElseThrow(NoSuchElementException::new);
-
-					System.out.println("Minimum time split found is : " + minTime);*/
-
-					/*if (minDistance > 3000 || minTime > 1800) {
-						handler.addRejection(person.getId(), tripIndex, routingMode);
-						//System.out.println("Person " + person.getId());
-					}*/
-
-                    //System.out.println("Person " + person.getId() + " is accepted");
                 }
                 tripIndex++;
             }

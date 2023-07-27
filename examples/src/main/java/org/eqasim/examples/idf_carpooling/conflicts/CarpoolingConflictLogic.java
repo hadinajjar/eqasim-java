@@ -113,14 +113,14 @@ public class CarpoolingConflictLogic implements ConflictLogic {
         }
     }
 
-    class TripInfo {
+    static class TripInfo {
         final private String routingMode;
         final private Coord originActivityCoord;
         final private Coord destinationActivityCoord;
 
         final private double departureTime;
 
-        static public TripInfo(Trip t) {
+         public TripInfo(Trip t) {
             this.routingMode = TripStructureUtils.getRoutingMode(t.getLegsOnly().get(0));
             this.originActivityCoord = t.getOriginActivity().getCoord();
             this.destinationActivityCoord = t.getDestinationActivity().getCoord();

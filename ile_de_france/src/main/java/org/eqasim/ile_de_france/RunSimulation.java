@@ -1,5 +1,6 @@
 package org.eqasim.ile_de_france;
 
+import com.google.common.io.Resources;
 import org.eqasim.core.simulation.analysis.EqasimAnalysisModule;
 import org.eqasim.core.simulation.mode_choice.EqasimModeChoiceModule;
 import org.eqasim.ile_de_france.mode_choice.IDFModeChoiceModule;
@@ -11,16 +12,20 @@ import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.controler.Controler;
 import org.matsim.core.scenario.ScenarioUtils;
 
+import java.net.URL;
+
 public class RunSimulation {
 	static public void main(String[] args) throws ConfigurationException {
 		CommandLine cmd = new CommandLine.Builder(args) //
-				.requireOptions("config-path") //
 				.allowPrefixes("mode-choice-parameter", "cost-parameter") //
 				.build();
 
+		URL configUrl = Resources.getResource("idf/ile_de_france_config.xml");
+
 		IDFConfigurator configurator = new IDFConfigurator();
-		Config config = ConfigUtils.loadConfig(cmd.getOptionStrict("config-path"), configurator.getConfigGroups());
-		cmd.applyConfiguration(config);
+		Config config = ConfigUtils.loadConfig(configUrl, configurator.getConfigGroups());
+		//cmd.applyConfiguration(config);
+		config.controler().setLastIteration(100);
 
 		Scenario scenario = ScenarioUtils.createScenario(config);
 		configurator.configureScenario(scenario);

@@ -1,4 +1,5 @@
-package org.eqasim.examples.corsica_carpooling.mode_choice;
+package org.eqasim.examples.idf_carpooling.mode_choice;
+
 
 import java.util.Collection;
 import java.util.List;
@@ -12,16 +13,16 @@ public class CarpoolingModeAvailability implements ModeAvailability {
 
     static public final String NAME = "CarpoolingModeAvailability";
 
-	private final ModeAvailability delegate = new IDFModeAvailability();
+    private final ModeAvailability delegate = new IDFModeAvailability();
 
-	@Override
-	public Collection<String> getAvailableModes(Person person, List<DiscreteModeChoiceTrip> trips) {
-		Collection<String> modes = delegate.getAvailableModes(person, trips);
+    @Override
+    public Collection<String> getAvailableModes(Person person, List<DiscreteModeChoiceTrip> trips) {
+        Collection<String> modes = delegate.getAvailableModes(person, trips);
 
-		if (modes.contains(TransportMode.walk)) {
-			modes.add("carpooling");
-		}
+        if (modes.contains(TransportMode.walk)) {
+            modes.add("carpooling");
+        }
 
-		return modes;
-	}
+        return modes;
+    }
 }

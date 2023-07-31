@@ -52,9 +52,8 @@ public class DriverAgent {
         for (TripInfo driverTrip : driverTrips) {
             double distDiffOrigin = CoordUtils.calcEuclideanDistance(driverTrip.originCoord, originCoord);
             double distDiffDestination = CoordUtils.calcEuclideanDistance(driverTrip.destinationCoord, destinationCoord);
-            double totalDistanceDiff = distDiffDestination + distDiffOrigin;
             double departureTimeDiff = Math.abs((departureTime - driverTrip.departureTime));
-            if (totalDistanceDiff > 3000 || departureTimeDiff > 1800) {
+            if (distDiffOrigin > 3000 || distDiffDestination > 3000 || departureTimeDiff > 1800) {
                 return false;
             } else {
                 carCapacity--;
@@ -64,7 +63,6 @@ public class DriverAgent {
         }
         return true;
     }
-
 
 
     @Override

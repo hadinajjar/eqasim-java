@@ -46,7 +46,13 @@ public class DriverAgent {
         Coord originCoord = trip.getOriginActivity().getCoord();
         Coord destinationCoord = trip.getDestinationActivity().getCoord();
         double departureTime = trip.getLegsOnly().get(0).getDepartureTime().seconds();
+        double tripDistance = trip.getLegsOnly().get(0).getRoute().getDistance();
+        // Refuse trip if no more places
         if (carCapacity == 0) {
+            return false;
+        }
+        // Refuse trip that are too short for carpooling
+        if (tripDistance < 1514) {
             return false;
         }
         for (TripInfo driverTrip : driverTrips) {

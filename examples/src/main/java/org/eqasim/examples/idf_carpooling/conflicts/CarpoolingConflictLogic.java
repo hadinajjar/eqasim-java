@@ -48,8 +48,8 @@ public class CarpoolingConflictLogic implements ConflictLogic{
 					boolean foundMatch = driverAgentList.stream()
 							.anyMatch(currentDriver -> {
 								if (currentDriver.acceptTrip(trip)) {
-									System.out.println("Driver " + currentDriver.getDriverId() + " accepted trip " +
-											finalTripIndex + " of Person " + person.getId());
+									//System.out.println("Driver " + currentDriver.getDriverId() + " accepted trip " +
+									//		finalTripIndex + " of Person " + person.getId());
 									return true;
 								}
 								return false;

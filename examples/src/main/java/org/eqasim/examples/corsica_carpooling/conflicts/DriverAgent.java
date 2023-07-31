@@ -46,7 +46,11 @@ public class DriverAgent {
         Coord originCoord = trip.getOriginActivity().getCoord();
         Coord destinationCoord = trip.getDestinationActivity().getCoord();
         double departureTime = trip.getLegsOnly().get(0).getDepartureTime().seconds();
+        double tripDistance = trip.getLegsOnly().get(0).getRoute().getDistance();
         if (carCapacity == 0) {
+            return false;
+        }
+        if (tripDistance < 1541) {
             return false;
         }
         for (TripInfo driverTrip : driverTrips) {
@@ -57,7 +61,7 @@ public class DriverAgent {
                 return false;
             } else {
                 carCapacity--;
-                System.out.println("Car capacity is now :" + carCapacity);
+                System.out.println("Car capacity is now: " + carCapacity);
                 break;
             }
         }

@@ -36,7 +36,7 @@ public class RunIDFCarpoolingSimulation {
         IDFConfigurator configurator = new IDFConfigurator();
         Config config = ConfigUtils.loadConfig(configUrl, configurator.getConfigGroups());
 
-        config.controler().setLastIteration(60);
+        config.controler().setLastIteration(30);
         config.qsim().setFlowCapFactor(1e9);
         config.qsim().setStorageCapFactor(1e9);
         cmd.applyConfiguration(config);

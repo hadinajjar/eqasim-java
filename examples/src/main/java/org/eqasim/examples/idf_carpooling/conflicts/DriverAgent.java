@@ -1,10 +1,17 @@
 package org.eqasim.examples.idf_carpooling.conflicts;
 
+import com.google.inject.Inject;
+import org.eqasim.examples.idf_carpooling.RunIDFCarpoolingSimulation;
+import org.eqasim.ile_de_france.mode_choice.costs.IDFCarCostModel;
 import org.matsim.api.core.v01.Coord;
 import org.matsim.api.core.v01.Id;
+import org.matsim.api.core.v01.network.Network;
 import org.matsim.api.core.v01.population.Person;
+import org.matsim.core.router.DijkstraFactory;
 import org.matsim.core.router.TripStructureUtils;
 import org.matsim.core.router.TripStructureUtils.Trip;
+import org.matsim.core.router.speedy.SpeedyALT;
+import org.matsim.core.router.util.LeastCostPathCalculator;
 import org.matsim.core.utils.geometry.CoordUtils;
 
 import java.util.ArrayList;
@@ -13,8 +20,10 @@ import java.util.Objects;
 
 public class DriverAgent {
 
+
     final private Id<Person> driverId;
     final private List<TripInfo> driverTrips;
+
 
     private int carCapacity = 2;
 
@@ -27,6 +36,7 @@ public class DriverAgent {
         Objects.requireNonNull(t);
         driverTrips.add(new TripInfo(t));
     }
+
 
 
     public List<TripInfo> getDriverTrips() {
@@ -47,25 +57,27 @@ public class DriverAgent {
         Coord destinationCoord = trip.getDestinationActivity().getCoord();
         double departureTime = trip.getLegsOnly().get(0).getDepartureTime().seconds();
         double tripDistance = trip.getLegsOnly().get(0).getRoute().getDistance();
-        // Refuse trip if no more places
-        if (carCapacity == 0) {
-            return false;
-        }
-        // Refuse trip that are too short for carpooling
-        if (tripDistance < 1514) {
+
+        /*LeastCostPathCalculator router = new DijkstraFactory().createPathCalculator();
+        router.calcLeastCostPath().travelTime;*/
+
+
+        // Refuse trip if no more places or distance < 2000
+        if (carCapacity == 0 || tripDistance < 2000) {
             return false;
         }
         for (TripInfo driverTrip : driverTrips) {
             double distDiffOrigin = CoordUtils.calcEuclideanDistance(driverTrip.originCoord, originCoord);
             double distDiffDestination = CoordUtils.calcEuclideanDistance(driverTrip.destinationCoord, destinationCoord);
             double departureTimeDiff = Math.abs((departureTime - driverTrip.departureTime));
-            if (distDiffOrigin > 3000 || distDiffDestination > 3000 || departureTimeDiff > 1800) {
+
+            if (departureTimeDiff > 900) {
+                return false;                   //original was (distDiffOrigin > 2000 && distDiffDestination > 2000)
+            } else if ((distDiffOrigin > 2000 && distDiffDestination > 2000) || (distDiffOrigin + distDiffDestination >= 4000)) {
                 return false;
-            } else {
-                carCapacity--;
-                System.out.println("Car capacity is now :" + carCapacity);
-                break;
             }
+            carCapacity--;
+            break;
         }
         return true;
     }

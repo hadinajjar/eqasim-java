@@ -11,6 +11,9 @@ public class CarpoolingConfigurator {
 	public void configureNetwork(Scenario scenario) {
 		Network network = scenario.getNetwork();
 
+
+
+
 		for (Link link : network.getLinks().values()) {
 			if (link.getAllowedModes().contains("car")) {
 				Set<String> modes = new HashSet<>(link.getAllowedModes());

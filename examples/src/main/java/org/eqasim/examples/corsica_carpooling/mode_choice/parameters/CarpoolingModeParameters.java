@@ -49,8 +49,9 @@ public class CarpoolingModeParameters extends IDFModeParameters {
 		parameters.walk.betaTravelTime_u_min = -0.15;
 
 		// Carpooling (adapted from car)
-		parameters.carpooling.alpha_u = 1.35;
-		parameters.carpooling.betaTravelTime_u_min = -0.06;
+		parameters.carpooling.alpha_u = 0.675;					// valeur originale = 1.35 //0.675
+		parameters.carpooling.betaTravelTime_u_min = -0.12;		// valuer originale = -0.06
+
 
 		return parameters;
 	}

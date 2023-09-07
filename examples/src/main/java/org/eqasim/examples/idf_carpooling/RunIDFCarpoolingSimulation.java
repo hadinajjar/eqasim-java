@@ -1,6 +1,8 @@
 package org.eqasim.examples.idf_carpooling;
 
 import com.google.common.io.Resources;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import org.eqasim.core.components.config.EqasimConfigGroup;
 import org.eqasim.core.simulation.analysis.EqasimAnalysisModule;
 import org.eqasim.core.simulation.mode_choice.EqasimModeChoiceModule;
@@ -11,6 +13,7 @@ import org.eqasim.ile_de_france.discrete_mode_choice.conflicts.ConflictModule;
 import org.eqasim.ile_de_france.discrete_mode_choice.conflicts.logic.ConflictLogic;
 import org.eqasim.ile_de_france.mode_choice.IDFModeChoiceModule;
 import org.matsim.api.core.v01.Scenario;
+import org.matsim.api.core.v01.network.Network;
 import org.matsim.contribs.discrete_mode_choice.modules.config.DiscreteModeChoiceConfigGroup;
 import org.matsim.core.config.CommandLine;
 import org.matsim.core.config.Config;
@@ -18,9 +21,12 @@ import org.matsim.core.config.ConfigUtils;
 import org.matsim.core.config.groups.PlanCalcScoreConfigGroup.ModeParams;
 import org.matsim.core.controler.AbstractModule;
 import org.matsim.core.controler.Controler;
+import org.matsim.core.network.NetworkUtils;
+import org.matsim.core.network.algorithms.TransportModeNetworkFilter;
 import org.matsim.core.scenario.ScenarioUtils;
 
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,7 +42,7 @@ public class RunIDFCarpoolingSimulation {
         IDFConfigurator configurator = new IDFConfigurator();
         Config config = ConfigUtils.loadConfig(configUrl, configurator.getConfigGroups());
 
-        config.controler().setLastIteration(30);
+        config.controler().setLastIteration(60);
         config.qsim().setFlowCapFactor(1e9);
         config.qsim().setStorageCapFactor(1e9);
         cmd.applyConfiguration(config);
@@ -61,7 +67,6 @@ public class RunIDFCarpoolingSimulation {
             networkModes.add("carpooling");
             config.plansCalcRoute().setNetworkModes(networkModes);
 
-
         }
 
         {
@@ -74,6 +79,7 @@ public class RunIDFCarpoolingSimulation {
         Scenario scenario = ScenarioUtils.createScenario(config);
         configurator.configureScenario(scenario);
         ScenarioUtils.loadScenario(scenario);
+
         new CarpoolingConfigurator().configureNetwork(scenario);
 
         Controler controller = new Controler(scenario);
@@ -84,6 +90,7 @@ public class RunIDFCarpoolingSimulation {
 
 
         {
+
             controller.addOverridingModule(new CarpoolingModule(cmd));
         }
 
@@ -93,17 +100,20 @@ public class RunIDFCarpoolingSimulation {
         controller.addOverridingModule(new AbstractModule() {
             @Override
             public void install() {
-                bind(ConflictLogic.class).toInstance(new CarpoolingConflictLogic());
+               // bind(ConflictLogic.class).toInstance(new CarpoolingConflictLogic());
+                bind(ConflictLogic.class).to(CarpoolingConflictLogic.class);
+            }
+            @Provides
+            @Singleton
+            public CarpoolingConflictLogic provideCarpoolingLogic(Network net) {
+                Network roadNetwork = NetworkUtils.createNetwork();
+                new TransportModeNetworkFilter(net).filter(roadNetwork, Collections.singleton("car"));
+                return new CarpoolingConflictLogic(roadNetwork);
             }
         });
 
+
         controller.run();
-
-
-
-
-
-
 
     }
 }

@@ -5,6 +5,7 @@ import java.util.*;
 import org.eqasim.ile_de_france.discrete_mode_choice.conflicts.ConflictHandler;
 import org.eqasim.ile_de_france.discrete_mode_choice.conflicts.logic.ConflictLogic;
 import org.matsim.api.core.v01.population.Person;
+import org.matsim.api.core.v01.population.PlanElement;
 import org.matsim.api.core.v01.population.Population;
 import org.matsim.core.router.TripStructureUtils;
 import org.matsim.core.router.TripStructureUtils.Trip;
@@ -45,8 +46,8 @@ public class CarpoolingConflictLogic implements ConflictLogic{
 					boolean foundMatch = driverAgentList.stream()
 							.anyMatch(currentDriver -> {
 								if (currentDriver.acceptTrip(trip)) {
-									System.out.println("Driver " + currentDriver.getDriverId() + " accepted trip " +
-											finalTripIndex + " of Person " + person.getId());
+									//System.out.println("Driver " + currentDriver.getDriverId() + " accepted trip " +
+									//		finalTripIndex + " of Person " + person.getId());
 									return true;
 								}
 								return false;

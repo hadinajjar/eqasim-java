@@ -11,8 +11,9 @@ public class CarpoolingCostParameters extends IDFCostParameters {
         CarpoolingCostParameters parameters = new CarpoolingCostParameters();
 
         parameters.carCost_EUR_km = 0.15;
-        parameters.carpoolingCost_EUR_km = 0.3;
+        parameters.carpoolingCost_EUR_km = 0.075;
 
         return parameters;
     }
+
 }

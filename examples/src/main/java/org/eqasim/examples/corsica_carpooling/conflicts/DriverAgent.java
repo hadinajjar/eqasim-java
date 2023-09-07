@@ -42,28 +42,29 @@ public class DriverAgent {
     }
 
 
+
     public boolean acceptTrip(Trip trip) {
         Coord originCoord = trip.getOriginActivity().getCoord();
         Coord destinationCoord = trip.getDestinationActivity().getCoord();
         double departureTime = trip.getLegsOnly().get(0).getDepartureTime().seconds();
         double tripDistance = trip.getLegsOnly().get(0).getRoute().getDistance();
-        if (carCapacity == 0) {
-            return false;
-        }
-        if (tripDistance < 1541) {
+
+        if (carCapacity == 0 || tripDistance < 2000) {
             return false;
         }
         for (TripInfo driverTrip : driverTrips) {
             double distDiffOrigin = CoordUtils.calcEuclideanDistance(driverTrip.originCoord, originCoord);
             double distDiffDestination = CoordUtils.calcEuclideanDistance(driverTrip.destinationCoord, destinationCoord);
             double departureTimeDiff = Math.abs((departureTime - driverTrip.departureTime));
-            if (distDiffOrigin > 3000 || distDiffDestination > 3000 ||departureTimeDiff > 1800) {
+
+
+            if (departureTimeDiff > 900) {
                 return false;
-            } else {
-                carCapacity--;
-                System.out.println("Car capacity is now: " + carCapacity);
-                break;
+            } else if (distDiffOrigin > 2000 && distDiffDestination > 2000) {
+                return false;
             }
+            carCapacity--;
+            break;
         }
         return true;
     }

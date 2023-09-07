@@ -29,8 +29,8 @@ public class CarpoolingPredictor extends CachedVariablePredictor<CarpoolingVaria
 		}
 
 		Leg leg = (Leg) elements.get(0);
-
-		double travelTime_min = leg.getTravelTime().seconds() / 60.0;
+		// Pénaliser l'agent de 5 minutes
+		double travelTime_min = (leg.getTravelTime().seconds() / 60.0) + 5;
 		double cost_MU = costModel.calculateCost_MU(person, trip, elements);
 
 		double euclideanDistance_km = PredictorUtils.calculateEuclideanDistance_km(trip);

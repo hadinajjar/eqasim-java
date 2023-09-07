@@ -69,6 +69,7 @@ public class CarpoolingModule extends AbstractEqasimExtension {
 		return parameters;
 	}
 
+
 	@Provides
 	@Singleton
 	public CarpoolingModeParameters provideModeParameters(EqasimConfigGroup config) {
@@ -87,9 +88,5 @@ public class CarpoolingModule extends AbstractEqasimExtension {
 	public CostModel provideCarpoolingCostModel(Map<String, Provider<CostModel>> factory, EqasimConfigGroup config) {
 		return getCostModel(factory, config, "carpooling");
 	}
-
-
-
-
 
 }

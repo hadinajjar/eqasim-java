@@ -14,6 +14,7 @@ public class CarpoolingUtilityEstimator implements UtilityEstimator {
 
     private final CarpoolingModeParameters parameters;
 
+
     private final CarpoolingPredictor predictor;
 
     @Inject
@@ -47,6 +48,5 @@ public class CarpoolingUtilityEstimator implements UtilityEstimator {
 
         return utility;
     }
-
 
 }
